@@ -4,9 +4,7 @@ FROM debian:stable-slim
 RUN apt-get update && apt-get install -y cfingerd
 
 # Create user
-RUN useradd -m \
-    -c "Anish Pallati,,,Email: apallati@anish.land, Website: https://anish.land, GitHub: https://github.com/apallati" \
-    -s /bin/zsh apallati
+RUN useradd -m -c "Anish Pallati" -s /bin/zsh apallati
 
 # Copy files into the image
 COPY cfingerd.conf /etc/cfingerd.conf
