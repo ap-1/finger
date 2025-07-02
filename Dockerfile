@@ -1,9 +1,27 @@
 FROM debian:stable-slim
 
-# Install cfingerd
-RUN apt-get update && \
-    apt-get install -y cfingerd && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /build
+
+# Download cfingerd source
+RUN wget http://www.infodrom.org/projects/cfingerd/download/cfingerd-1.4.3.tar.gz && \
+    tar xzf cfingerd-1.4.3.tar.gz
+
+WORKDIR /build/cfingerd-1.4.3
+
+# Enable DAEMON_MODE
+RUN sed -i 's|/\* #define DAEMON_MODE \*/|#define DAEMON_MODE|' src/config.h
+
+# Build cfingerd
+RUN make && make install
+
+# Cleanup
+WORKDIR /
+RUN rm -rf /build
 
 # Create user
 RUN useradd -m -c "Anish Pallati" -s /bin/zsh apallati
