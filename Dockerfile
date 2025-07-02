@@ -1,8 +1,8 @@
 FROM debian:stable-slim
 
-# Install cfingerd and inetutils-inetd (provides inetd)
+# Install cfingerd
 RUN apt-get update && \
-    apt-get install -y cfingerd inetutils-inetd && \
+    apt-get install -y cfingerd && \
     rm -rf /var/lib/apt/lists/*
 
 # Create user
@@ -15,11 +15,6 @@ COPY nouser_banner.txt /etc/cfingerd/nouser_banner.txt
 
 RUN chown apallati:apallati /home/apallati/.pgpkey /etc/cfingerd/nouser_banner.txt
 
-# Add inetd configuration
-COPY inetd.conf /etc/inetd.conf
-
-# Expose finger port
+# Run cfingerd
 EXPOSE 79
-
-# Run inetd in the foreground
-CMD ["inetutils-inetd", "-d"]
+CMD ["cfingerd", "-d"]
