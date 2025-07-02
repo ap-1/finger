@@ -22,4 +22,4 @@ COPY inetd.conf /etc/inetd.conf
 EXPOSE 79
 
 # Run inetd in the foreground
-CMD ["inetd", "-d"]
+CMD ["inetutils-inetd", "-d"]
